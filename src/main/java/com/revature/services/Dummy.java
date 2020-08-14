@@ -116,7 +116,7 @@ public class Dummy {
 					this.users.add(newUser);
 					
 					//create a savings account
-					Account newAccount = new Account("Savings", newUser, accountStatus, this);
+					Account newAccount = new Account("Savings", newUser, accountStatus, this) {
 					newUser.addAccount(newAccount);
 					this.addAccount(newAccount);
 					

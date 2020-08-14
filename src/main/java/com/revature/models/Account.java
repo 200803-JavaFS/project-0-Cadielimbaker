@@ -1,36 +1,52 @@
-package com.revature.models;
+	package com.revature.models;
 
-import java.util.ArrayList;
+	import java.io.Serializable;
 
-public class Account {
 
+	public class Account implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+			
 	private String type; //name of the account type
-	private String id;
+	private String accountId;
 	private User owner; //owner is the user object who owns the account
-	private ArrayList <Transaction> transactions; //list of transactions for the account
-	private String accountStatus;
+	private ACCOUNTSTATUS accountStatus;
+	private double balance;
+	
 
-	//account constructor
-	public Account(String type, User owner, String accountStatus, Bank myBank) {
-		
-		//set the account type and owner
+	public Account(String type, String accountId, User owner, String accountStatus, double balance) {
+		super();
+		this.type = type;
+		this.accountId = accountId;
+		this.owner = owner;
+		this.balance = balance;
+	}
+	
+	//remove accountId for serialization purposes
+	public Account(String type, User owner, String accountStatus, double balance) {
+		super();
 		this.type = type;
 		this.owner = owner;
-		
-		//initialize transactions into an empty array list
-		this.transactions = new ArrayList<Transaction>();
-		
+		this.balance = balance;
+	}
+	
+	public double getBalance() {
+		return balance;
+	}
+
+	public void setBalance(double balance) {
+		this.balance = balance;
 	}
 
 	public Account() {
 		super();
 	}
 
-	public String getAccountStatus() {
+	public ACCOUNTSTATUS getAccountStatus() {
 		return accountStatus;
 	}
 
-	public void setAccountStatus(String accountStatus) {
+	public void setAccountStatus(ACCOUNTSTATUS accountStatus) {
 		this.accountStatus = accountStatus;
 	}
 	
@@ -42,12 +58,12 @@ public class Account {
 		this.type = type;
 	}
 
-	public String getId() {
-		return id;
+	public String getaccountId() {
+		return accountId;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setId(String accountId) {
+		this.accountId = accountId;
 	}
 
 	public User getOwner() {
@@ -58,19 +74,14 @@ public class Account {
 		this.owner = owner;
 	}
 
-	public ArrayList<Transaction> getTransactions() {
-		return transactions;
-	}
-
-	public void setTransactions(ArrayList<Transaction> transactions) {
-		this.transactions = transactions;
-	}
-
 	@Override
 	public String toString() {
-		return "Account [type=" + type + ", id=" + id + ", owner=" + owner + ", transactions=" + transactions
-				+ ", accountStatus=" + accountStatus + "]";
+		return "Account [type=" + type + ", accountId=" + accountId + ", owner=" + owner + ", accountStatus=" + accountStatus
+				+ ", balance=" + balance + "]";
 	}
 
-	}
+}
 	
+
+	
+
