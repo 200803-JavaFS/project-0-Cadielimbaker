@@ -16,13 +16,13 @@
 	private String firstName;
 	private String lastName;
 	private String userName;
-	private String Id;
+	private int Id;
 	private int phoneNumber;
 	private String password;
 	private USERTYPE userType; //customer, employee, administrator
 		
 	public User(String firstName, String lastName, String userName, int phoneNumber, String password,
-			USERTYPE userType, String Id) {
+			USERTYPE userType, int Id) {
 	super();
 	this.firstName = firstName;
 	this.lastName = lastName;
@@ -72,11 +72,11 @@
 		this.lastName = lastName;
 	}
 	
-	public String getId() {
+	public int getId() {
 		return Id;
 	}
 	
-	public void setId(String Id) {
+	public void setId(int Id) {
 		this.Id = Id;
 	}
 	
@@ -84,11 +84,33 @@
 		return phoneNumber;
 	}
 	
+	public void setPhoneNumber(int phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+	
+	public String getPassword() {
+		return password;
+	}
+	
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	
+	//enumerator for user type 
+	public USERTYPE getUserType() {
+		return userType;
+	}
+	
+	//enumerator for user type
+	public void setUserType(USERTYPE userType) {
+		this.userType = userType;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((Id == null) ? 0 : Id.hashCode());
+		result = prime * result + Id;
 		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
 		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
@@ -107,10 +129,7 @@
 		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
-		if (Id == null) {
-			if (other.Id != null)
-				return false;
-		} else if (!Id.equals(other.Id))
+		if (Id != other.Id)
 			return false;
 		if (firstName == null) {
 			if (other.firstName != null)
@@ -143,28 +162,6 @@
 	public String toString() {
 		return "User [firstName=" + firstName + ", lastName=" + lastName + ", userName=" + userName + ", Id=" + Id
 				+ ", phoneNumber=" + phoneNumber + ", password=" + password + ", userType=" + userType + "]";
-	}
-
-	public void setPhoneNumber(int phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
-	
-	public String getPassword() {
-		return password;
-	}
-	
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	
-	//enumerator for user type 
-	public USERTYPE getUserType() {
-		return userType;
-	}
-	
-	//enumerator for user type
-	public void setUserType(USERTYPE userType) {
-		this.userType = userType;
 	}
 	
 	}

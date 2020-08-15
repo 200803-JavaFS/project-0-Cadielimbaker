@@ -7,7 +7,7 @@ import com.revature.models.Account;
 	public class AccountServices {
 //NEED TO FIGURE OUT WHAT GOES HERE
 	}
-
+	
 	public void deposit(int amount) {
 		balance += amount;            
 	}
@@ -22,9 +22,9 @@ import com.revature.models.Account;
 		return true;
 	}
 
-	public void close() {
+	public void closeAccount() {
 		balance = 0;
-		ACCOUNTSTATUS = CLOSED
+		setAccountStatus("closed");
 }
 
 	

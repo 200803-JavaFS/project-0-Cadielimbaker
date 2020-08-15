@@ -9,10 +9,12 @@
 	import java.util.List;
 
 	import com.revature.models.Account;
-	import com.revature.utils.ConnectionUtility;
+import com.revature.models.User;
+import com.revature.utils.ConnectionUtility;
 
 	public class AccountDAO implements IAccountDAO {
-
+		private IUserDAO udao = new UserDAO();
+		
 		@Override
 		//Finding all the accounts
 		public List<Account> findAll() {
@@ -21,27 +23,26 @@
 				String sql = "SELECT * FROM Account;";
 				
 				Statement statement = conn.createStatement();
-				List<Account> list = new ArrayList();
+				List<Account> list = new ArrayList<>();
 				ResultSet result = statement.executeQuery(sql);
 				
 				while(result.next()) {
 					Account acct = new Account();
-					acct.setAccountId(result.getString("accountId"));	//This is pulling an AccountId string from the AccountId column 
+					acct.setAccountId(result.getInt("accountId"));	//This is pulling an AccountId string from the AccountId column 
 																		//and set it as the AccountId field in my new Account object
 					acct.setAccountType(result.getString("accountType"));
-					acct.setId(result.getInt("Id_fk"));
-					//acct.setAccountStatus(accountStatus);
+					acct.setAccountId(result.getInt("accountId"));
+					acct.setAccountStatus(result.getString("accountStatus"));
 					acct.setBalance(result.getDouble("balance"));
 					
-				}
+					}
 				
 				return list;
 				
 			}catch(SQLException e) {
 				e.printStackTrace();
 			}
-			
-			
+		
 			return null;
 		}
 
@@ -59,11 +60,11 @@
 				
 				if(result.next()) {
 					Account acct = new Account();
-					acct.setAccountId(result.getString("accountId"));	//This is pulling an AccountId string from the AccountId column 
+					acct.setAccountId(result.getInt("accountId"));	//This is pulling an AccountId string from the AccountId column 
 																		//and set it as the AccountId field in my new Account object
 					acct.setAccountType(result.getString("accountType"));
 					acct.setId(result.getInt("Id_fk"));
-					//acct.setAccountStatus(accountStatus);
+					acct.setAccountStatus(result.getString("accountStatus"));
 					acct.setBalance(result.getDouble("balance"));
 					return acct;
 					
@@ -83,17 +84,16 @@
 			
 			try(Connection conn = ConnectionUtility.getConnection()){
 				
-				String sql = "INSERT INTO Account (accountId, accountType, Id_fk, accountStatus, balance)"
+				String sql = "INSERT INTO Account (accountType, Id_fk, accountStatus, balance)"
 						+ "VALUES (?, ?, ?, ?, ?);";
 				//not all need question marks, but they don't hurt they can only help
 				
 				PreparedStatement statement = conn.prepareStatement(sql);
 				
 				int index = 0;
-				statement.setString(++index, acct.getAccountId());
 				statement.setString(++index, acct.getAccountType());
 				statement.setInt(++index, acct.getId());
-				//statement.setString(++index, acct.getAccountStatus());
+				statement.setString(++index, acct.getAccountStatus());
 				statement.setDouble(++index, acct.getBalance());
 				
 				statement.execute();
@@ -103,6 +103,19 @@
 				e.printStackTrace();
 			}
 			
+			return false;
+		}
+
+		//DO THIS ONE LIKE THE UPDATE USER IN THE USERDAO
+		@Override
+		public boolean updateAccountStatus(String accountStatus) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+		//DO THIS ONE LIKE addAvengerWithHome()
+		@Override
+		public boolean addAccountwithUser(Account acct) {
+			// TODO Auto-generated method stub
 			return false;
 		}
 

@@ -9,12 +9,12 @@ import java.util.ArrayList;
 	private static final long serialVersionUID = 1L;
 			
 	private String accountType; //name of the account type
-	private String accountId;
+	private int accountId;
 	private int Id; //YOU NEED TO MAKE SURE THAT THIS WORKS (owner is the object of User)
-	private ACCOUNTSTATUS accountStatus;
+	private String accountStatus;
 	private double balance;
 	
-	public Account(String accountType, String accountId, int id, ACCOUNTSTATUS accountStatus, double balance) {
+	public Account(String accountType, int accountId, int id, String accountStatus, double balance) {
 		super();
 		this.accountType = accountType;
 		this.accountId = accountId;
@@ -23,7 +23,7 @@ import java.util.ArrayList;
 		this.balance = balance;
 	}
 
-	public Account(String accountType, int id, ACCOUNTSTATUS accountStatus, double balance) {
+	public Account(String accountType, int id, String accountStatus, double balance) {
 		super();
 		this.accountType = accountType;
 		Id = id;
@@ -43,11 +43,11 @@ import java.util.ArrayList;
 		this.accountType = accountType;
 	}
 
-	public String getAccountId() {
+	public int getAccountId() {
 		return accountId;
 	}
 
-	public void setAccountId(String accountId) {
+	public void setAccountId(int accountId) {
 		this.accountId = accountId;
 	}
 
@@ -59,11 +59,11 @@ import java.util.ArrayList;
 		Id = id;
 	}
 
-	public ACCOUNTSTATUS getAccountStatus() {
+	public String getAccountStatus() {
 		return accountStatus;
 	}
 
-	public void setAccountStatus(ACCOUNTSTATUS accountStatus) {
+	public void setAccountStatus(String accountStatus) {
 		this.accountStatus = accountStatus;
 	}
 
@@ -74,19 +74,13 @@ import java.util.ArrayList;
 	public void setBalance(double balance) {
 		this.balance = balance;
 	}
-	
-	@Override
-	public String toString() {
-		return "Account [accountType=" + accountType + ", accountId=" + accountId + ", Id=" + Id + ", accountStatus="
-				+ accountStatus + ", balance=" + balance + "]";
-	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + Id;
-		result = prime * result + ((accountId == null) ? 0 : accountId.hashCode());
+		result = prime * result + accountId;
 		result = prime * result + ((accountStatus == null) ? 0 : accountStatus.hashCode());
 		result = prime * result + ((accountType == null) ? 0 : accountType.hashCode());
 		long temp;
@@ -106,12 +100,12 @@ import java.util.ArrayList;
 		Account other = (Account) obj;
 		if (Id != other.Id)
 			return false;
-		if (accountId == null) {
-			if (other.accountId != null)
-				return false;
-		} else if (!accountId.equals(other.accountId))
+		if (accountId != other.accountId)
 			return false;
-		if (accountStatus != other.accountStatus)
+		if (accountStatus == null) {
+			if (other.accountStatus != null)
+				return false;
+		} else if (!accountStatus.equals(other.accountStatus))
 			return false;
 		if (accountType == null) {
 			if (other.accountType != null)
@@ -122,10 +116,11 @@ import java.util.ArrayList;
 			return false;
 		return true;
 	}
-//ASK TIM ABOUT THIS!!!!
-	public ACCOUNTSTATUS getAccountStatus(String string) {
-		
-		return null;
+
+	@Override
+	public String toString() {
+		return "Account [accountType=" + accountType + ", accountId=" + accountId + ", Id=" + Id + ", accountStatus="
+				+ accountStatus + ", balance=" + balance + "]";
 	}
 	
 	}
