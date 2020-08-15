@@ -1,5 +1,5 @@
 package com.revature.models;
 
 public enum ACCOUNTSTATUS {
-	OPENED, CLOSED, PENDING, CANCELLED
+	OPENED, CLOSED, PENDING, APPROVED, CANCELLED;
 }

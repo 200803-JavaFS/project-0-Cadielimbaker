@@ -14,6 +14,12 @@ import com.revature.models.User;
 public class Dummy {
 }
 
+
+//Method for viewing all the accounts (SELECT * FROM Account);
+//Method for add an account INSERT INTO Account(parameters) VALUES(info for parameters);
+//Method to change an account
+
+//=========================================
 //method to add an account for the user
 	public void addAccount(Account anAccount) {
 		this.accounts.add(anAccount); //encapsulation because the accounts property is private

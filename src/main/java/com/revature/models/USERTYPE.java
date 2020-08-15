@@ -3,3 +3,4 @@
 	public enum USERTYPE {
 		CUSTOMER, EMPLOYEE, ADMINISTRATOR
 	}
+	

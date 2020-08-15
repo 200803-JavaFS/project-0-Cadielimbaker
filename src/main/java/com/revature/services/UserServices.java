@@ -25,7 +25,7 @@ public String getNewUserID() {
 		}
 		nonUnique = false; //check for uniqueness
 		for(User u: this.users) {
-			if(id.compareTo(u.getID())==0) {
+			if(id.compareTo(u.getId())==0) {
 				nonUnique = true;
 				break;
 			}

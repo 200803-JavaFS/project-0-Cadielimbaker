@@ -21,12 +21,14 @@ public class ConnectionUtility {
 		
 		return DriverManager.getConnection(url, username, password);
 }
-		//public static void main(String[]args)
+		//Can use to test for connection
+		//public static void main(String[]args) {
 		//try(Connection conn = ConnectionUtility.getConnection()){
-		//	System.out.println("connection was successful");
+			//System.out.println("connection was successful");
 		//}catch(SQLException e) {
 			//e.printStackTrace();
 		//}
 		
 }
+//}
 

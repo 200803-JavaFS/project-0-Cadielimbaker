@@ -18,39 +18,31 @@
 	private String userName;
 	private String Id;
 	private int phoneNumber;
-	private byte pinHash[];
+	private String password;
 	private USERTYPE userType; //customer, employee, administrator
-	private ArrayList <Account> accounts; //each user will have an array list of accounts they use
-	
 		
-	public User(String firstName, String lastName, String userName, String id, int phoneNumber, byte[] pinHash,
-			USERTYPE userType, ArrayList<Account> accounts, String Id) {
+	public User(String firstName, String lastName, String userName, int phoneNumber, String password,
+			USERTYPE userType, String Id) {
 	super();
 	this.firstName = firstName;
 	this.lastName = lastName;
 	this.userName = userName;
 	this.Id = Id;
 	this.phoneNumber = phoneNumber;
-	this.pinHash = pinHash;
+	this.password = password;
 	this.userType = userType;
-	this.accounts = accounts;
-	//create an empty list of accounts
-	this.accounts = new ArrayList <Account>();
 	}
-	
+
 	//remove Id for serialization purposes
-	public User(String firstName, String lastName, String userName, int phoneNumber, byte[] pinHash,
-			USERTYPE userType, ArrayList<Account> accounts, String Id) {
+	public User(String firstName, String lastName, String userName, int phoneNumber, String password,
+			USERTYPE userType) {
 	super();
 	this.firstName = firstName;
 	this.lastName = lastName;
 	this.userName = userName;
 	this.phoneNumber = phoneNumber;
-	this.pinHash = pinHash;
+	this.password = password;
 	this.userType = userType;
-	this.accounts = accounts;
-	//create an empty list of accounts
-	this.accounts = new ArrayList <Account>();
 	}
 		public User() {
 		super();
@@ -80,7 +72,7 @@
 		this.lastName = lastName;
 	}
 	
-	public String getAccountId() {
+	public String getId() {
 		return Id;
 	}
 	
@@ -92,24 +84,77 @@
 		return phoneNumber;
 	}
 	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((Id == null) ? 0 : Id.hashCode());
+		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
+		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
+		result = prime * result + ((password == null) ? 0 : password.hashCode());
+		result = prime * result + phoneNumber;
+		result = prime * result + ((userName == null) ? 0 : userName.hashCode());
+		result = prime * result + ((userType == null) ? 0 : userType.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		if (Id == null) {
+			if (other.Id != null)
+				return false;
+		} else if (!Id.equals(other.Id))
+			return false;
+		if (firstName == null) {
+			if (other.firstName != null)
+				return false;
+		} else if (!firstName.equals(other.firstName))
+			return false;
+		if (lastName == null) {
+			if (other.lastName != null)
+				return false;
+		} else if (!lastName.equals(other.lastName))
+			return false;
+		if (password == null) {
+			if (other.password != null)
+				return false;
+		} else if (!password.equals(other.password))
+			return false;
+		if (phoneNumber != other.phoneNumber)
+			return false;
+		if (userName == null) {
+			if (other.userName != null)
+				return false;
+		} else if (!userName.equals(other.userName))
+			return false;
+		if (userType != other.userType)
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "User [firstName=" + firstName + ", lastName=" + lastName + ", userName=" + userName + ", Id=" + Id
+				+ ", phoneNumber=" + phoneNumber + ", password=" + password + ", userType=" + userType + "]";
+	}
+
 	public void setPhoneNumber(int phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
 	
-	public byte[] getPinHash() {
-		return pinHash;
+	public String getPassword() {
+		return password;
 	}
 	
-	public void setPinHash(byte[] pinHash) {
-		this.pinHash = pinHash;
-	}
-	
-	public ArrayList<Account> getAccounts() {
-		return accounts;
-	}
-	
-	public void setAccounts(ArrayList<Account> accounts) {
-		this.accounts = accounts;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	
 	//enumerator for user type 
@@ -120,16 +165,6 @@
 	//enumerator for user type
 	public void setUserType(USERTYPE userType) {
 		this.userType = userType;
-	}
-	
-	@Override
-	public String toString() {
-		return "User [firstName=" + firstName + ", lastName=" + lastName + ", id=" + Id + ", pinHash="
-				+ Arrays.toString(pinHash) + ", userType=" + userType + ", accounts=" + accounts + "]";
-	}
-	public String getID() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	
 	}
