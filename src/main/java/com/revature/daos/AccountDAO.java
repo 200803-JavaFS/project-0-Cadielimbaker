@@ -8,9 +8,11 @@
 	import java.util.ArrayList;
 	import java.util.List;
 
-	import com.revature.models.Account;
+import com.revature.models.Account;
 import com.revature.models.User;
 import com.revature.utils.ConnectionUtility;
+import com.revature.daos.UserDAO;
+import com.revature.daos.IUserDAO;
 
 	public class AccountDAO implements IAccountDAO {
 		private IUserDAO udao = new UserDAO();
@@ -47,14 +49,14 @@ import com.revature.utils.ConnectionUtility;
 		}
 
 		@Override
-		public Account findByAccountId(String AccountId) {
+		public Account findByAccountId(int accountId) {
 			try(Connection conn = ConnectionUtility.getConnection()){
 				
 				String sql = "SELECT * FROM Account WHERE AccountId = ?;";
 				
 				PreparedStatement statement = conn.prepareStatement(sql);
 				
-				statement.setString(1, AccountId);
+				statement.setInt(1, accountId);
 				
 				ResultSet result = statement.executeQuery();
 				
@@ -66,6 +68,7 @@ import com.revature.utils.ConnectionUtility;
 					acct.setId(result.getInt("Id_fk"));
 					acct.setAccountStatus(result.getString("accountStatus"));
 					acct.setBalance(result.getDouble("balance"));
+					
 					return acct;
 					
 				} else {
@@ -85,7 +88,7 @@ import com.revature.utils.ConnectionUtility;
 			try(Connection conn = ConnectionUtility.getConnection()){
 				
 				String sql = "INSERT INTO Account (accountType, Id_fk, accountStatus, balance)"
-						+ "VALUES (?, ?, ?, ?, ?);";
+						+ "VALUES (?, ?, ?, 'Pending', ?);";
 				//not all need question marks, but they don't hurt they can only help
 				
 				PreparedStatement statement = conn.prepareStatement(sql);
@@ -108,18 +111,76 @@ import com.revature.utils.ConnectionUtility;
 
 		//DO THIS ONE LIKE THE UPDATE USER IN THE USERDAO
 		@Override
-		public boolean updateAccountStatus(String accountStatus) {
-			// TODO Auto-generated method stub
-			return false;
-		}
-		//DO THIS ONE LIKE addAvengerWithHome()
-		@Override
-		public boolean addAccountwithUser(Account acct) {
-			// TODO Auto-generated method stub
-			return false;
-		}
+		public boolean updateAccount(Account acct) {
+			try (Connection conn = ConnectionUtility.getConnection()) {
+				String sql = "UPDATE Account SET accountType = ?, Id_fk = ?, accountStatus = ?, balance = ?"
+						+ " WHERE accountId = ?;";
+				
+				PreparedStatement statement = conn.prepareStatement(sql);
 
-	}
+				int index = 0;
+				statement.setString(++index, acct.getAccountType());
+				statement.setInt(++index, acct.getId());
+				statement.setString(++index, acct.getAccountStatus());
+				statement.setDouble(++index, acct.getBalance());
+				statement.setInt(++index, acct.getAccountId());
+				
+				statement.execute();
+				return true;
+			}catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+			return false;
+		}
+		
+		@Override
+		public boolean updateAccountStatus(String accountStatus, int accountId) {
+			try (Connection conn = ConnectionUtility.getConnection()) {
+				String sql = "UPDATE Account SET accountStatus = ?"
+						+ " WHERE accountId = ?;";
+				
+				PreparedStatement statement = conn.prepareStatement(sql);
+
+				int index = 0;
+	
+				statement.setString(++index, accountStatus);
+				statement.setInt(++index, accountId);
+				
+				statement.execute();
+				return true;
+				
+			}catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+			return false;
+		}
+		
+	
+
+		@Override
+		public boolean updateBalance(double balance, int accountId){
+			try (Connection conn = ConnectionUtility.getConnection()) {
+				String sql = "UPDATE Account SET balance = ?"
+						+ " WHERE accountId = ?;";
+				
+				PreparedStatement statement = conn.prepareStatement(sql);
+
+				int index = 0;
+
+				statement.setDouble(++index, balance);
+				statement.setInt(++index, accountId);
+				
+				statement.execute();
+				return true;
+			}catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+			return false;
+		}
+		}
 
 
 		

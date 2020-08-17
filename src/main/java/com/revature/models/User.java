@@ -19,10 +19,11 @@
 	private int Id;
 	private int phoneNumber;
 	private String password;
-	private USERTYPE userType; //customer, employee, administrator
-		
+	private int userType; //customer(0), employee(1), administrator(2)
+
+	
 	public User(String firstName, String lastName, String userName, int phoneNumber, String password,
-			USERTYPE userType, int Id) {
+			int userType, int Id) {
 	super();
 	this.firstName = firstName;
 	this.lastName = lastName;
@@ -35,7 +36,7 @@
 
 	//remove Id for serialization purposes
 	public User(String firstName, String lastName, String userName, int phoneNumber, String password,
-			USERTYPE userType) {
+			int userType) {
 	super();
 	this.firstName = firstName;
 	this.lastName = lastName;
@@ -97,12 +98,12 @@
 	}
 	
 	//enumerator for user type 
-	public USERTYPE getUserType() {
+	public int getUserType() {
 		return userType;
 	}
 	
 	//enumerator for user type
-	public void setUserType(USERTYPE userType) {
+	public void setUserType(int userType) {
 		this.userType = userType;
 	}
 
@@ -116,7 +117,7 @@
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
 		result = prime * result + phoneNumber;
 		result = prime * result + ((userName == null) ? 0 : userName.hashCode());
-		result = prime * result + ((userType == null) ? 0 : userType.hashCode());
+		result = prime * result + userType;
 		return result;
 	}
 

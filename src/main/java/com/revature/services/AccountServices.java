@@ -1,78 +1,113 @@
 package com.revature.services;
-import java.util.Random;
 
-import com.revature.models.User;
-import com.revature.models.Account;
+	import java.util.List;
+
+	import org.apache.logging.log4j.LogManager;
+	import org.apache.logging.log4j.Logger;
+
+	import com.revature.daos.UserDAO;
+	import com.revature.daos.AccountDAO;
+	import com.revature.daos.IUserDAO;
+	import com.revature.daos.IAccountDAO;
+	import com.revature.models.User;
+	import com.revature.models.Account;
 
 	public class AccountServices {
-//NEED TO FIGURE OUT WHAT GOES HERE
+
+	private static IUserDAO udao = new UserDAO();
+	private static IAccountDAO dao = new AccountDAO();
+	private static final Logger log = LogManager.getLogger(UserServices.class);
+	
+	public List<Account> findAll() {
+		log.info("Retrieving all bank accounts");
+		List<Account> list = dao.findAll();
+
+		return list;
 	}
 	
-	public void deposit(int amount) {
-		balance += amount;            
+	public boolean updateAccountStatus(String accountStatus, int accountId) {
+		log.info("Updating the account status:" + accountStatus);
+		return dao.updateAccountStatus(accountStatus, accountId);
 	}
 
-	public boolean withdraw(int amount) {
-		if( amount > balance )
-			
-			return false;		// unsuccessful
-		
-		balance -= amount;		// successful
-		
-		return true;
+	//locates a account based on account id
+	public Account findByAccountId(int accountId) {
+		log.info("Finding an account with account id " + accountId);
+		return dao.findByAccountId(accountId);
 	}
 
-	public void closeAccount() {
-		balance = 0;
-		setAccountStatus("closed");
-}
-
-	
-	//create a new account (SAVINGS OR CHECKINGS)
-	Account newAccount = new Account(type, owner, ACCOUNTSTATUS, this);
-	USERTYPE.addAccount(newAccount);
-	this.addAccount(newAccount);
-	
-	return owner;
-	return USERTYPE.userName;
-}
-
-//method for new account id
-public String getNewAccountID() {
-	
-	String id; //initialize the id string
-	Random rng = new Random();
-	int len= 6;
-	boolean nonUnique = false;
-	
-	do {
-		id= "";
-		for(int i = 0; i<len; i++) {
-			id+=((Integer)rng.nextInt(10)).toString();
-			
-			//check for uniqueness
-			nonUnique = false;
-			for(Account a: this.accounts) {
-				if(id.compareTo(a.getaccountId())==0) {
-					nonUnique=true;
-					break;
-				}
-			}
-		}
-	}while(nonUnique);
-	return id;
-}
-	
-	public double checkBalance() {
-	return this.balance;
-	
-	//look up other transfer methods
-	public boolean transfer(Account other, double amount) {
-		if(this.balance >= amount) {
-			this.balance -= amount;
-			other.balance += amount;
+	//updates a given account
+	public boolean updateAccount(Account acct) {
+		log.info("Updating account: " + acct);
+		if (dao.updateAccount(acct)) {
 			return true;
 		}
 		return false;
 	}
+
+	//GET SOMEONE TO LOOK OVER METHOD wants me to chance my getId method to static
+	public boolean insertAccount(Account acct) {
+
+		if (acct.getId() != 0 ) {
+			List<User> list = udao.findAllUser();
+			boolean b = false;
+			for (User u : list) {
+				if (u.equals(acct.getId())) {
+					b = true;
+				}
+			}
+			if (b) {
+				log.info("Creating a new Account: "+acct);
+				if (dao.addAccount(acct)) {
+					return true;
+				}
+			}
+		} else {
+			log.info("Creating a new Account: "+acct);
+			if(dao.addAccount(acct)) {
+				return true;
+			}
+		}
+		return false;
 	}
+
+	
+	
+	public double deposit(double amount, int accountId) {
+		
+		Account a = dao.findByAccountId(accountId);
+		
+		if (amount < 0) {
+			log.info("The amount must be greater than 0.00 for a deposit");
+			
+		}else {
+			log.info("Making a deposit of" + amount + "from account id: " + accountId);
+			double newBalance = a.getBalance() + amount;
+			a.setBalance(newBalance);
+			dao.updateBalance(newBalance, accountId);
+			
+	}
+		System.out.println("This deposit was successful!");
+		return a.getBalance();
+	}
+		
+	public double withdraw(double amount, int accountId) {
+		
+		Account a = dao.findByAccountId(accountId);
+		
+		if( amount <= a.getBalance()) {
+			log.info("Making a wihdrawal of" + amount + "from account id:" + accountId);
+			double newBalance = a.getBalance() - amount;
+			a.setBalance(newBalance);
+			dao.updateBalance(newBalance, accountId);
+	}else {
+		log.info("Insufficient funds!");	
+	}
+	System.out.println("This withdrawl was successful!");
+	return a.getBalance();
+	}
+	}
+
+
+	
+	

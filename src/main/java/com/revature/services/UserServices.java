@@ -1,35 +1,76 @@
-package com.revature.services;
+	package com.revature.services;
 
-import java.util.Random;
+	import java.util.List;
 
-import com.revature.models.User;
+	import org.apache.logging.log4j.LogManager;
+	import org.apache.logging.log4j.Logger;
 
-public class UserServices {
+	import com.revature.daos.UserDAO;
+	import com.revature.daos.AccountDAO;
+	import com.revature.daos.IUserDAO;
+	import com.revature.daos.IAccountDAO;
+	import com.revature.models.User;
+	import com.revature.models.Account;
 
-}
+	public class UserServices {
 
-//method for new id for a new user
-public String getNewUserID() {
+	private static IUserDAO udao = new UserDAO();
+	private static IAccountDAO dao = new AccountDAO();
+	private static final Logger log = LogManager.getLogger(UserServices.class);
+	private Account acct;
 
-	String id; //initialize the id string
-	Random rng = new Random(); //Random number generator
-	int len = 6;
-	boolean nonUnique;
+	public List<User> findAllUser() {
+		log.info("Retrieving all bank users");
+		List<User> list = udao.findAllUser();
+
+		return list;
+	}
 	
-	//do while loop that will continue looping until I get a unique user id
-	do {
+	//login a user
+	public User login(String userName, String password) {
+		log.info("Login in with userName and password" + userName + password);
+		return udao.login(userName, password);
+	}
 		
-		id = ""; //generate an id integer/number
-		for(int i = 0; i<len ; i++) {
-			id +=((Integer)rng.nextInt(10)).toString(); //wrapper class to add an integer from 0 to 9 in string form
+	//locates a user based on id
+	public User findById(int Id) {
+		log.info("Finding a user with id " + Id);
+		return udao.findById(Id);
+	}
+
+	//updates a given user
+	public boolean updateUser(User u) {
+		log.info("Updating user: " + u);
+		if (udao.updateUser(u)) {
+			return true;
 		}
-		nonUnique = false; //check for uniqueness
-		for(User u: this.users) {
-			if(id.compareTo(u.getId())==0) {
-				nonUnique = true;
-				break;
+		return false;
+	}
+
+	//adds a user but checks to see if the user already exists based on user name, if so it will return a list of all accounts
+	public boolean insertUser(User u) {
+
+		if (u.getUserName() != null) {
+			List<Account> list = dao.findAll();
+			boolean b = false;
+			for (Account acct : list) {
+				if (acct.equals(u.getId())) {
+					b = true;
+				}
+			}
+			if (b) {
+				log.info("Inserting user: " + u);
+				if (udao.addUser(u)) {
+					return true;
+				}
+			}
+		} else {
+			log.info("Inserting User: " + u);
+			if (udao.addUser(u)) {
+				return true;
 			}
 		}
-	}while(nonUnique);
-	return id;
+		return false;
+		
+	}
 }

@@ -14,19 +14,19 @@ import java.util.ArrayList;
 	private String accountStatus;
 	private double balance;
 	
-	public Account(String accountType, int accountId, int id, String accountStatus, double balance) {
+	public Account(String accountType, int accountId, int Id, String accountStatus, double balance) {
 		super();
 		this.accountType = accountType;
 		this.accountId = accountId;
-		Id = id;
+		Id = Id;
 		this.accountStatus = accountStatus;
 		this.balance = balance;
 	}
 
-	public Account(String accountType, int id, String accountStatus, double balance) {
+	public Account(String accountType, int Id, String accountStatus, double balance) {
 		super();
 		this.accountType = accountType;
-		Id = id;
+		Id = Id;
 		this.accountStatus = accountStatus;
 		this.balance = balance;
 	}
@@ -56,7 +56,7 @@ import java.util.ArrayList;
 	}
 
 	public void setId(int id) {
-		Id = id;
+		Id = Id;
 	}
 
 	public String getAccountStatus() {

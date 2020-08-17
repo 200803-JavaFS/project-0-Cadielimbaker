@@ -8,8 +8,9 @@ import com.revature.models.User;
 	public interface IAccountDAO {
 	
 		public List<Account> findAll();
-		public Account findByAccountId(String AccountId);
+		public Account findByAccountId(int accountId);
 		public boolean addAccount(Account acct ); //returns a boolean so that you know if the method was successful
-		public boolean updateAccountStatus(String accountStatus);
-		public boolean addAccountwithUser(Account acct);
+		public boolean updateAccount(Account acct);
+		public boolean updateAccountStatus(String accountStatus, int accountId);
+		public boolean updateBalance(double balance, int accountId);
 }
