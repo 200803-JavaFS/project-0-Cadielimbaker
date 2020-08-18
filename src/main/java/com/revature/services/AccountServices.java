@@ -1,8 +1,9 @@
 package com.revature.services;
 
 	import java.util.List;
+import java.util.Scanner;
 
-	import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.LogManager;
 	import org.apache.logging.log4j.Logger;
 
 	import com.revature.daos.UserDAO;
@@ -17,6 +18,7 @@ package com.revature.services;
 	private static IUserDAO udao = new UserDAO();
 	private static IAccountDAO dao = new AccountDAO();
 	private static final Logger log = LogManager.getLogger(UserServices.class);
+	private static final Scanner scan = new Scanner(System.in);
 	
 	public List<Account> findAll() {
 		log.info("Retrieving all bank accounts");
@@ -46,6 +48,7 @@ package com.revature.services;
 	}
 
 	//GET SOMEONE TO LOOK OVER METHOD wants me to chance my getId method to static
+	@SuppressWarnings("unlikely-arg-type")
 	public boolean insertAccount(Account acct) {
 
 		if (acct.getId() != 0 ) {
@@ -70,10 +73,9 @@ package com.revature.services;
 		}
 		return false;
 	}
-
 	
 	
-	public double deposit(double amount, int accountId) {
+	public static double deposit(double amount, int accountId) {
 		
 		Account a = dao.findByAccountId(accountId);
 		
@@ -90,9 +92,9 @@ package com.revature.services;
 		System.out.println("This deposit was successful!");
 		return a.getBalance();
 	}
-		
-	public double withdraw(double amount, int accountId) {
-		
+	
+	public static double withdraw(double amount, int accountId) {
+	
 		Account a = dao.findByAccountId(accountId);
 		
 		if( amount <= a.getBalance()) {
@@ -106,8 +108,8 @@ package com.revature.services;
 	System.out.println("This withdrawl was successful!");
 	return a.getBalance();
 	}
+	
 	}
-
 
 	
 	

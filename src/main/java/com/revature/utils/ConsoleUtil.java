@@ -7,6 +7,7 @@ import com.revature.models.User;
 import com.revature.models.Account;
 import com.revature.services.AccountServices;
 import com.revature.services.UserServices;
+import com.revature.daos.AccountDAO;
 import com.revature.daos.UserDAO;
 
 
@@ -14,7 +15,7 @@ public class ConsoleUtil {
 	private static final Scanner scan = new Scanner(System.in);
 	private AccountServices as = new AccountServices();
 	private UserServices us = new UserServices();
-	
+	private AccountDAO ad = new AccountDAO(); 
 	
 	
 	//finish this login()
@@ -24,16 +25,16 @@ public class ConsoleUtil {
 			System.out.println("Here is your user information" + (u));
 		
 		try (Scanner scanner = new Scanner(System.in)) {
-	        System.out.print(" Enter user name => ");
+	        System.out.print(" Enter user name: ");
 	        String userName = scanner.nextLine();
 
-	        System.out.print(" Enter password => ");
+	        System.out.print(" Enter password: ");
 	        String password = scanner.nextLine();
 
 	        if ("cadielimbaker".equals(userName) && "password".equals(password)) {
-	            System.out.println(" User successfully logged-in.. ");
+	            System.out.println(" User successfully logged-in! ");
 	        } else {
-	            System.out.println(" In valid userName or password ");
+	            System.out.println(" In valid userName or password! ");
 	        }
 	        beginApp();
 	    }
@@ -86,10 +87,26 @@ public class ConsoleUtil {
 			updateBalance();
 			break;
 		case "deposit":
-			deposit();
+			
+			System.out.println("What is the account id for the account you are depositing into?");
+			int accountId = scan.nextInt();
+			scan.nextLine();
+			System.out.println("What is the amount you would like to deposit (two decimals)?");
+			double amount = scan.nextDouble();
+			
+			AccountServices.deposit(amount, accountId);
+			beginApp();
 			break;
 		case "withdrawal":
-			withdrawal();
+			
+			System.out.println("What is the account id for the account you are withdrawaling from?");
+			int i = scan.nextInt();
+			scan.nextLine();
+			System.out.println("What is the amount you would like to withdrawal (two decimals)?");
+			double money = scan.nextDouble();
+			
+			AccountServices.withdraw(money, i);
+			beginApp();
 			break;
 		case "transfer":
 			transfer();
@@ -97,7 +114,7 @@ public class ConsoleUtil {
 		case "all users":
 			findAllUser();
 			break;
-		case "all acounts":
+		case "all accounts":
 			findAll();
 			break;
 		case "one user":
@@ -115,6 +132,76 @@ public class ConsoleUtil {
 				
 	}
 	
+
+	private void findByAccountId() {
+		System.out.println("What is the account id for the account you are looking for?");
+		int accountId = scan.nextInt();
+		scan.nextLine();
+		Account acct = as.findByAccountId(accountId);
+		System.out.println("The account is: "+acct);
+		beginApp();
+	}
+		
+
+	private void findById() {
+		System.out.println("What is the id of the user you are looking for?");
+		int Id = scan.nextInt();
+		scan.nextLine();
+		User u = us.findById(Id);
+		System.out.println("The user is: "+Id);
+		beginApp();
+	}
+		
+
+	private void findAll() {
+		List<Account> list = as.findAll();
+		
+		System.out.println("Here are all the accounts in the database:");
+		for(Account acct:list) {
+			System.out.println(acct);
+		}
+		beginApp();
+	}
+	
+
+	private void findAllUser() {
+		List<User> list = us.findAllUser();
+		System.out.println("Here are all the users in the database:");
+		
+		for(User u:list) {
+			System.out.println(u);
+		}
+		beginApp();
+	}
+	
+
+	public void transfer() {
+		System.out.println("What is the account id for the account you are withdrawaling from?");
+		int accountId1 = scan.nextInt();
+		scan.nextLine();
+		Account acct1 = as.findByAccountId(accountId1);
+		System.out.println("What is the id of the account you are transferring into?");
+		int accountId2 = scan.nextInt();
+		scan.nextLine();
+		Account acct2 = as.findByAccountId(accountId2);
+		System.out.println("What is the amount you are planning to transferring?");
+		double transferAmount = scan.nextDouble();
+		scan.nextLine();
+		AccountServices.withdraw(transferAmount, accountId1);
+		AccountServices.deposit(transferAmount, accountId2);
+		
+		double newAcc1Balance = acct1.getBalance() + transferAmount;
+		acct1.setBalance(newAcc1Balance);
+		ad.updateBalance(newAcc1Balance, accountId1);
+		
+		double newAcc2Balance = acct2.getBalance() + transferAmount;
+		acct1.setBalance(newAcc2Balance);
+		ad.updateBalance(newAcc2Balance, accountId2);
+		
+		System.out.println("The new balance for the first account with id is: "+newAcc1Balance);
+		System.out.println("The new balance for the second account with id is: "+newAcc2Balance);
+		beginApp();
+	}
 
 	private void updateBalance() {
 		System.out.println("What is the id of the account you would like to look at?");
