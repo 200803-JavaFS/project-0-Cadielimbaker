@@ -83,8 +83,7 @@ public class ConsoleUtil {
 			updateAccountStatus();
 			break;
 		case "close account":
-			updateAccountStatus();
-			updateBalance();
+			closeAccount();
 			break;
 		case "deposit":
 			
@@ -98,15 +97,24 @@ public class ConsoleUtil {
 			beginApp();
 			break;
 		case "withdrawal":
-			
-			System.out.println("What is the account id for the account you are withdrawaling from?");
-			int i = scan.nextInt();
+			System.out.println("What is your user type, give the number: (0)Customer, (1)Employee, (2)Administrator.");
+			int userType = scan.nextInt();
 			scan.nextLine();
-			System.out.println("What is the amount you would like to withdrawal (two decimals)?");
-			double money = scan.nextDouble();
 			
-			AccountServices.withdraw(money, i);
-			beginApp();
+			if ( userType != 1) {
+				System.out.println("What is the account id for the account you are withdrawaling from?");
+				int i = scan.nextInt();
+				scan.nextLine();
+				System.out.println("What is the amount you would like to withdrawal (two decimals)?");
+				double money = scan.nextDouble();
+				
+				AccountServices.withdraw(money, i);
+				beginApp();
+		}else {
+			System.out.println("You do not have access to withdrawal");
+			beginApp(); 
+		}
+			
 			break;
 		case "transfer":
 			transfer();
@@ -133,8 +141,35 @@ public class ConsoleUtil {
 	}
 	
 
+	private void closeAccount() {
+		System.out.println("What is your user type, give the number: (0)Customer, (1)Employee, (2)Administrator.");
+		int userType = scan.nextInt();
+		scan.nextLine();
+		
+		if ( userType == 2) {
+			System.out.println("What is the account id of the account you are looking for?");
+			int accountId = scan.nextInt();
+			scan.nextLine();
+			Account acct = as.findByAccountId(accountId);
+			System.out.println("The account is: "+acct);
+			scan.nextLine();
+			System.out.println("You may update the account status to [Closed], type Closed.");
+			String accountStatus = scan.nextLine();
+			as.updateAccountStatus(accountStatus, accountId);
+			ad.updateBalance(0.00, accountId);
+
+			beginApp();
+				
+	}else {
+		System.out.println("You do not have access to close this account");
+		beginApp(); 
+	}
+	}
+		
+
 	private void findByAccountId() {
-		System.out.println("What is the account id for the account you are looking for?");
+		
+		System.out.println("What is the account id of the account you are looking for?");
 		int accountId = scan.nextInt();
 		scan.nextLine();
 		Account acct = as.findByAccountId(accountId);
@@ -148,61 +183,90 @@ public class ConsoleUtil {
 		int Id = scan.nextInt();
 		scan.nextLine();
 		User u = us.findById(Id);
-		System.out.println("The user is: "+Id);
+		System.out.println("The user is: "+u);
 		beginApp();
 	}
 		
 
 	private void findAll() {
-		List<Account> list = as.findAll();
+		System.out.println("What is your user type, give the number: (0)Customer, (1)Employee, (2)Administrator.");
+		int userType = scan.nextInt();
+		scan.nextLine();
 		
-		System.out.println("Here are all the accounts in the database:");
-		for(Account acct:list) {
-			System.out.println(acct);
-		}
-		beginApp();
+		if ( userType != 0) {
+			List<Account> list = as.findAll();
+			
+			System.out.println("Here are all the accounts in the database:");
+			for(Account acct:list) {
+				System.out.println(acct);
+			}
+			beginApp();
+		
+	}else {
+		System.out.println("You do not have access to update the account balance");
+		beginApp(); 
+	}
 	}
 	
 
 	private void findAllUser() {
-		List<User> list = us.findAllUser();
-		System.out.println("Here are all the users in the database:");
+		System.out.println("What is your user type, give the number: (0)Customer, (1)Employee, (2)Administrator.");
+		int userType = scan.nextInt();
+		scan.nextLine();
 		
-		for(User u:list) {
-			System.out.println(u);
-		}
-		beginApp();
+		if ( userType != 0) {
+			List<User> list = us.findAllUser();
+			System.out.println("Here are all the users in the database:");
+			
+			for(User u:list) {
+				System.out.println(u);
+			}
+			beginApp();
+	}else {
+		System.out.println("You do not have access to update the account balance");
+		beginApp(); 
+	}
 	}
 	
 
 	public void transfer() {
-		System.out.println("What is the account id for the account you are withdrawaling from?");
-		int accountId1 = scan.nextInt();
+		System.out.println("What is your user type, give the number: (0)Customer, (1)Employee, (2)Administrator.");
+		int userType = scan.nextInt();
 		scan.nextLine();
-		Account acct1 = as.findByAccountId(accountId1);
-		System.out.println("What is the id of the account you are transferring into?");
-		int accountId2 = scan.nextInt();
-		scan.nextLine();
-		Account acct2 = as.findByAccountId(accountId2);
-		System.out.println("What is the amount you are planning to transferring?");
-		double transferAmount = scan.nextDouble();
-		scan.nextLine();
-		AccountServices.withdraw(transferAmount, accountId1);
-		AccountServices.deposit(transferAmount, accountId2);
 		
-		double newAcc1Balance = acct1.getBalance() + transferAmount;
-		acct1.setBalance(newAcc1Balance);
-		ad.updateBalance(newAcc1Balance, accountId1);
-		
-		double newAcc2Balance = acct2.getBalance() + transferAmount;
-		acct1.setBalance(newAcc2Balance);
-		ad.updateBalance(newAcc2Balance, accountId2);
-		
-		System.out.println("The new balance for the first account with id is: "+newAcc1Balance);
-		System.out.println("The new balance for the second account with id is: "+newAcc2Balance);
-		beginApp();
+		if ( userType != 1) {
+			System.out.println("What is the account id for the account you are withdrawaling from?");
+			int accountId1 = scan.nextInt();
+			scan.nextLine();
+			Account acct1 = as.findByAccountId(accountId1);
+			System.out.println("What is the id of the account you are transferring into?");
+			int accountId2 = scan.nextInt();
+			scan.nextLine();
+			Account acct2 = as.findByAccountId(accountId2);
+			System.out.println("What is the amount you are planning to transferring?");
+			double transferAmount = scan.nextDouble();
+			scan.nextLine();
+			AccountServices.withdraw(transferAmount, accountId1);
+			AccountServices.deposit(transferAmount, accountId2);
+			
+			double newAcc1Balance = acct1.getBalance() + transferAmount;
+			acct1.setBalance(newAcc1Balance);
+			ad.updateBalance(newAcc1Balance, accountId1);
+			
+			double newAcc2Balance = acct2.getBalance() + transferAmount;
+			acct1.setBalance(newAcc2Balance);
+			ad.updateBalance(newAcc2Balance, accountId2);
+			
+			System.out.println("The new balance for the first account with id is: "+newAcc1Balance);
+			System.out.println("The new balance for the second account with id is: "+newAcc2Balance);
+			beginApp();
+	}else {
+		System.out.println("You do not have access to transfer");
+		beginApp(); 
+	}
 	}
 
+	//don't think I need this method anymore
 	private void updateBalance() {
 		System.out.println("What is the id of the account you would like to look at?");
 		int i = scan.nextInt();
