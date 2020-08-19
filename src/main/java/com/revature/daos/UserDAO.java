@@ -17,7 +17,7 @@ public class UserDAO implements IUserDAO {
 	public List<User> findAllUser() {
 		
 		try(Connection conn = ConnectionUtility.getConnection()){
-			String sql = "SELECT * FROM User;";
+			String sql = "SELECT * FROM Users;";
 			
 			Statement statement = conn.createStatement();
 			
@@ -50,7 +50,7 @@ public class UserDAO implements IUserDAO {
 	@Override
 	public User findById(int Id) {
 		try(Connection conn = ConnectionUtility.getConnection()){
-			String sql = "SELECT * FROM homes WHERE Id = ?;";
+			String sql = "SELECT * FROM Users WHERE Id = ?;";
 			
 			PreparedStatement statement = conn.prepareStatement(sql);
 			
@@ -86,7 +86,7 @@ public class UserDAO implements IUserDAO {
 		
 		try(Connection conn = ConnectionUtility.getConnection()){
 			
-			String sql = "INSERT INTO User (firstName, lastName, userName, phoneNumber, password, userType)"
+			String sql = "INSERT INTO Users (firstName, lastName, userName, phoneNumber, password, userType)"
 					+ "VALUES (?, ?, ?, ?, ?, ?);"; //not all these ?s are required
 		
 			
@@ -113,7 +113,7 @@ public class UserDAO implements IUserDAO {
 	@Override
 	public boolean updateUser(User u) {
 		try (Connection conn = ConnectionUtility.getConnection()) {
-			String sql = "UPDATE User SET Id = ?, firstName = ?, lastName = ?, userName = ?, "
+			String sql = "UPDATE Users SET firstName = ?, lastName = ?, userName = ?, "
 					+ "phoneNumber = ?, password = ?, userType = ? WHERE Id = ?;";
 			
 			PreparedStatement statement = conn.prepareStatement(sql);
@@ -125,7 +125,6 @@ public class UserDAO implements IUserDAO {
 			statement.setInt(++index, u.getPhoneNumber());
 			statement.setString(++index, u.getPassword());
 			statement.setInt(++index, u.getUserType());
-			statement.setInt(++index, u.getId());
 			
 			statement.execute();
 			return true;
@@ -140,7 +139,7 @@ public class UserDAO implements IUserDAO {
 	@Override
 	public boolean deleteUser(int Id) {
 		try (Connection conn = ConnectionUtility.getConnection()) {
-			String sql = "DELETE FROM User WHERE Id =" + Id + ";";
+			String sql = "DELETE FROM Users WHERE Id =" + Id + ";";
 
 			Statement statement = conn.createStatement();
 
@@ -155,7 +154,7 @@ public class UserDAO implements IUserDAO {
 	@Override
 	public User login(String userName, String password) {
 		try(Connection conn = ConnectionUtility.getConnection()){
-			String sql = "SELECT * FROM homes WHERE userName = ? + password = ?;";
+			String sql = "SELECT * FROM Users WHERE userName = ? + password = ?;";
 			
 			PreparedStatement statement = conn.prepareStatement(sql);
 			

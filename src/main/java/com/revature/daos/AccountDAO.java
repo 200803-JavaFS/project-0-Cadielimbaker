@@ -87,15 +87,14 @@ import com.revature.daos.IUserDAO;
 			
 			try(Connection conn = ConnectionUtility.getConnection()){
 				
-				String sql = "INSERT INTO Account (accountType, Id_fk, accountStatus, balance)"
-						+ "VALUES (?, ?, ?, 'Pending', ?);";
+				String sql = "INSERT INTO Account (accountType, accountStatus, balance)"
+						+ "VALUES (?, ?, ?);";
 				//not all need question marks, but they don't hurt they can only help
 				
 				PreparedStatement statement = conn.prepareStatement(sql);
 				
 				int index = 0;
 				statement.setString(++index, acct.getAccountType());
-				statement.setInt(++index, acct.getId());
 				statement.setString(++index, acct.getAccountStatus());
 				statement.setDouble(++index, acct.getBalance());
 				
@@ -113,17 +112,15 @@ import com.revature.daos.IUserDAO;
 		@Override
 		public boolean updateAccount(Account acct) {
 			try (Connection conn = ConnectionUtility.getConnection()) {
-				String sql = "UPDATE Account SET accountType = ?, Id_fk = ?, accountStatus = ?, balance = ?"
+				String sql = "UPDATE Account SET accountType = ?, accountStatus = ?, balance = ?"
 						+ " WHERE accountId = ?;";
 				
 				PreparedStatement statement = conn.prepareStatement(sql);
 
 				int index = 0;
 				statement.setString(++index, acct.getAccountType());
-				statement.setInt(++index, acct.getId());
 				statement.setString(++index, acct.getAccountStatus());
 				statement.setDouble(++index, acct.getBalance());
-				statement.setInt(++index, acct.getAccountId());
 				
 				statement.execute();
 				return true;
