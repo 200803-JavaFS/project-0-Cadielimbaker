@@ -17,5 +17,5 @@ public interface IUserDAO {
 	
 	//typically Banks do not delete information, but I included it here just in case
 	public boolean deleteUser(int Id);
-	public User login(String userName, String password);
+	public User login(String userName);
 }

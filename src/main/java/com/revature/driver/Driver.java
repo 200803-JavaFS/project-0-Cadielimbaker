@@ -21,6 +21,6 @@ import com.revature.utils.ConsoleUtil;
 		//System.out.println(dao.addAccount(acct));
 	//}
 		ConsoleUtil cons = new ConsoleUtil();
-		cons.login();
+		cons.login2();
 	}
 	}

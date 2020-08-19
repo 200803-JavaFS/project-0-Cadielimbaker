@@ -18,38 +18,35 @@ public class ConsoleUtil {
 	private AccountDAO ad = new AccountDAO();
 	private UserDAO ud = new UserDAO();
 	
-	
-	//finish this login()
-	public void login() {
+	public void login2() {
 		System.out.println("Welcome to the Bank of Revature! Please login");
 			User u = new User();
 		
 		try (Scanner scanner = new Scanner(System.in)) {
-	        System.out.print(" Enter user id: ");
-	        int id = Integer.parseInt(scan.nextLine());
+	        System.out.print(" Enter user name: ");
+	        String userName = scan.nextLine();
 
 	        System.out.print(" Enter password: ");
 	        String password = scan.nextLine();
-
-	        if (password.equals(ud.findById(id).getPassword())) {
+	        
+	        if (password.equals(ud.login(userName).getPassword())) {
 	            System.out.println(" User successfully logged-in! ");
 	            beginApp();
 	        } else {
 	            System.out.println(" In valid userName or password! ");
 	        }
+		}
 	        
 	    }
-	}
-		
+	
 		public void beginApp() {
 			
 		System.out.println("Select what you need:\n"
 				
 				+ "Please [add user]\n"
 				+ "Please [add account]\n"
-				+ "Please [update account]\n"
-				+ "Please [approve account]\n"
-				+ "Please [deny account]\n"
+				//+ "Please [update account]\n"
+				+ "Please [approve/deny account]\n"
 				+ "Please [close account]\n"
 				+ "Please [update user]\n"
 				+ "Please [deposit] money\n"
@@ -76,17 +73,18 @@ public class ConsoleUtil {
 		case "add account":
 			addAccount();
 			break;
-		case "approve account":
+		case "approve/deny account":
 			updateAccountStatus(); 
-			break;
-		case "deny account":
-			updateAccountStatus();
 			break;
 		case "close account":
 			closeAccount();
 			break;
 		case "deposit":
+			System.out.println("What is your user type, give the number: (0)Customer, (1)Employee, (2)Administrator.");
+			int userType1 = scan.nextInt();
+			scan.nextLine();
 			
+			if(userType1 != 1) {
 			System.out.println("What is the account id for the account you are depositing into?");
 			int accountId = scan.nextInt();
 			scan.nextLine();
@@ -95,6 +93,11 @@ public class ConsoleUtil {
 			
 			AccountServices.deposit(amount, accountId);
 			beginApp();
+			}else {
+				System.out.println("You do not have access to withdrawal");
+				beginApp(); 
+			}
+			
 			break;
 		case "withdrawal":
 			System.out.println("What is your user type, give the number: (0)Customer, (1)Employee, (2)Administrator.");
@@ -194,9 +197,11 @@ public class ConsoleUtil {
 		scan.nextLine();
 		
 		if ( userType != 0) {
+			System.out.println("here");
 			List<Account> list = as.findAll();
 			
 			System.out.println("Here are all the accounts in the database:");
+			
 			for(Account acct:list) {
 				System.out.println(acct);
 			}
@@ -302,6 +307,7 @@ public class ConsoleUtil {
 			System.out.println("You may update the account status to [Approved] or [Denied], which do you choose?");
 			String accountStatus = scan.nextLine();
 			as.updateAccountStatus(accountStatus, i);
+			beginApp();
 	}else {
 		System.out.println("You do not have access to update account status");
 		beginApp(); 
@@ -315,8 +321,10 @@ public class ConsoleUtil {
 		String accountStatus = scan.nextLine();
 		System.out.println("Enter a balance amount (format ie. 0.00)");
 		double balance = scan.nextDouble();
+		System.out.println("What is your user id?");
+		int i = scan.nextInt();
 		
-		Account acct = new Account();
+		Account acct = new Account(accountType, i, accountStatus,balance);
 		boolean b = as.insertAccount(acct);
 		
 		if(b) {
@@ -340,13 +348,15 @@ public class ConsoleUtil {
 		scan.nextLine();
 		System.out.println("What is the password of the user you would like to add?");
 		String password = scan.nextLine();
-		System.out.println("Are you a Customer(0), Employee(1), or Administrator(2), please enter the number?");
+		System.out.println("Is the user a Customer(0), Employee(1), or Administrator(2), please enter the number?");
 		int I = scan.nextInt();
 		scan.nextLine();
 		
 		User u = new User(firstName, lastName, userName, phoneNumber, password, I);
 		
-		if(us.insertUser(u)) {
+		boolean b = us.insertUser(u);
+		
+		if(b) {
 			System.out.println("Your user was added to the database");
 			beginApp();
 		} else {

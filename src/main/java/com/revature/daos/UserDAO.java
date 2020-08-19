@@ -152,14 +152,14 @@ public class UserDAO implements IUserDAO {
 	}
 	
 	@Override
-	public User login(String userName, String password) {
+	public User login(String userName) {
 		try(Connection conn = ConnectionUtility.getConnection()){
-			String sql = "SELECT * FROM Users WHERE userName = ? + password = ?;";
+			String sql = "SELECT * FROM Users WHERE userName = ?;";
 			
 			PreparedStatement statement = conn.prepareStatement(sql);
 			
 			statement.setString(1, userName);
-			statement.setString(2, password);
+			
 			
 			ResultSet result = statement.executeQuery();
 			
@@ -185,7 +185,6 @@ public class UserDAO implements IUserDAO {
 		}
 		return null;
 	}
-	}
-
+}
 
 	

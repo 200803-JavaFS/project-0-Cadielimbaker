@@ -33,10 +33,11 @@ import com.revature.daos.IUserDAO;
 					acct.setAccountId(result.getInt("accountId"));	//This is pulling an AccountId string from the AccountId column 
 																		//and set it as the AccountId field in my new Account object
 					acct.setAccountType(result.getString("accountType"));
-					acct.setAccountId(result.getInt("accountId"));
+					acct.setId(result.getInt("Id_fk"));
 					acct.setAccountStatus(result.getString("accountStatus"));
 					acct.setBalance(result.getDouble("balance"));
 					
+					return list;
 					}
 				
 				return list;
@@ -62,10 +63,9 @@ import com.revature.daos.IUserDAO;
 				
 				if(result.next()) {
 					Account acct = new Account();
-					acct.setAccountId(result.getInt("accountId"));	//This is pulling an AccountId string from the AccountId column 
-																		//and set it as the AccountId field in my new Account object
+					acct.setAccountId(result.getInt("accountId"));	
 					acct.setAccountType(result.getString("accountType"));
-					acct.setId(result.getInt("Id_fk"));
+					acct.setId(result.getInt("id_fk"));
 					acct.setAccountStatus(result.getString("accountStatus"));
 					acct.setBalance(result.getDouble("balance"));
 					
@@ -89,7 +89,6 @@ import com.revature.daos.IUserDAO;
 				
 				String sql = "INSERT INTO Account (accountType, accountStatus, balance)"
 						+ "VALUES (?, ?, ?);";
-				//not all need question marks, but they don't hurt they can only help
 				
 				PreparedStatement statement = conn.prepareStatement(sql);
 				

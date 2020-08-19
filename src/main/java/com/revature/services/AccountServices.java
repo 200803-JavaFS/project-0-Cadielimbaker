@@ -55,7 +55,7 @@ import org.apache.logging.log4j.LogManager;
 			List<User> list = udao.findAllUser();
 			boolean b = false;
 			for (User u : list) {
-				if (u.equals(acct.getId())) {
+				if (u.getId()==acct.getId()) {
 					b = true;
 				}
 			}
@@ -83,7 +83,7 @@ import org.apache.logging.log4j.LogManager;
 			log.info("The amount must be greater than 0.00 for a deposit");
 			
 		}else {
-			log.info("Making a deposit of" + amount + "from account id: " + accountId);
+			log.info("Making a deposit of" + amount + " from account id: " + accountId);
 			double newBalance = a.getBalance() + amount;
 			a.setBalance(newBalance);
 			dao.updateBalance(newBalance, accountId);

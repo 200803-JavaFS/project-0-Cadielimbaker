@@ -27,9 +27,9 @@
 	}
 	
 	//login a user
-	public User login(String userName, String password) {
-		log.info("Login in with userName and password" + userName + password);
-		return udao.login(userName, password);
+	public User login(String userName) {
+		log.info("Login in with userName" + userName);
+		return udao.login(userName);
 	}
 		
 	//locates a user based on id
@@ -51,23 +51,19 @@
 	public boolean insertUser(User u) {
 
 		if (u.getUserName() != null) {
-			List<Account> list = dao.findAll();
+			List<User> list = udao.findAllUser();
 			boolean b = false;
-			for (Account acct : list) {
-				if (acct.equals(u.getId())) {
+			
+			for (User user : list) {
+				if (user.getUserName().equals(u.getUserName())) {
 					b = true;
 				}
 			}
-			if (b) {
+			if (!b) {
 				log.info("Inserting user: " + u);
 				if (udao.addUser(u)) {
 					return true;
 				}
-			}
-		} else {
-			log.info("Inserting User: " + u);
-			if (udao.addUser(u)) {
-				return true;
 			}
 		}
 		return false;
