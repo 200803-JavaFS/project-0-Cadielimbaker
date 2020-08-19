@@ -18,7 +18,7 @@ import java.util.ArrayList;
 		super();
 		this.accountType = accountType;
 		this.accountId = accountId;
-		Id = Id;
+		this.Id = Id;
 		this.accountStatus = accountStatus;
 		this.balance = balance;
 	}
@@ -26,7 +26,7 @@ import java.util.ArrayList;
 	public Account(String accountType, int Id, String accountStatus, double balance) {
 		super();
 		this.accountType = accountType;
-		Id = Id;
+		this.Id = Id;
 		this.accountStatus = accountStatus;
 		this.balance = balance;
 	}
@@ -55,8 +55,8 @@ import java.util.ArrayList;
 		return Id;
 	}
 
-	public void setId(int id) {
-		Id = Id;
+	public void setId(int Id) {
+		this.Id = Id;
 	}
 
 	public String getAccountStatus() {

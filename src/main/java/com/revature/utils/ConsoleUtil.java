@@ -110,6 +110,7 @@ public class ConsoleUtil {
 				scan.nextLine();
 				System.out.println("What is the amount you would like to withdrawal (two decimals)?");
 				double money = scan.nextDouble();
+				scan.nextLine();
 				
 				AccountServices.withdraw(money, i);
 				beginApp();
@@ -197,7 +198,7 @@ public class ConsoleUtil {
 		scan.nextLine();
 		
 		if ( userType != 0) {
-			System.out.println("here");
+		
 			List<Account> list = as.findAll();
 			
 			System.out.println("Here are all the accounts in the database:");
@@ -243,27 +244,22 @@ public class ConsoleUtil {
 			System.out.println("What is the account id for the account you are withdrawaling from?");
 			int accountId1 = scan.nextInt();
 			scan.nextLine();
-			Account acct1 = as.findByAccountId(accountId1);
+			
 			System.out.println("What is the id of the account you are transferring into?");
 			int accountId2 = scan.nextInt();
 			scan.nextLine();
-			Account acct2 = as.findByAccountId(accountId2);
+			
 			System.out.println("What is the amount you are planning to transferring?");
 			double transferAmount = scan.nextDouble();
 			scan.nextLine();
 			AccountServices.withdraw(transferAmount, accountId1);
 			AccountServices.deposit(transferAmount, accountId2);
+			Account acct1 = as.findByAccountId(accountId1);
+			Account acct2 = as.findByAccountId(accountId2);
 			
-			double newAcc1Balance = acct1.getBalance() + transferAmount;
-			acct1.setBalance(newAcc1Balance);
-			ad.updateBalance(newAcc1Balance, accountId1);
 			
-			double newAcc2Balance = acct2.getBalance() + transferAmount;
-			acct1.setBalance(newAcc2Balance);
-			ad.updateBalance(newAcc2Balance, accountId2);
-			
-			System.out.println("The new balance for the first account with id is: "+newAcc1Balance);
-			System.out.println("The new balance for the second account with id is: "+newAcc2Balance);
+			System.out.println("The new balance for the first account with id is: "+acct1.getBalance());
+			System.out.println("The new balance for the second account with id is: "+ acct2.getBalance());
 			beginApp();
 	}else {
 		System.out.println("You do not have access to transfer");
@@ -271,7 +267,7 @@ public class ConsoleUtil {
 	}
 	}
 
-	//don't think I need this method anymore
+	
 	private void updateBalance() {
 		System.out.println("What is the id of the account you would like to look at?");
 		int i = scan.nextInt();
@@ -323,6 +319,7 @@ public class ConsoleUtil {
 		double balance = scan.nextDouble();
 		System.out.println("What is your user id?");
 		int i = scan.nextInt();
+		scan.nextLine();
 		
 		Account acct = new Account(accountType, i, accountStatus,balance);
 		boolean b = as.insertAccount(acct);

@@ -36,8 +36,8 @@ import com.revature.daos.IUserDAO;
 					acct.setId(result.getInt("Id_fk"));
 					acct.setAccountStatus(result.getString("accountStatus"));
 					acct.setBalance(result.getDouble("balance"));
+					list.add(acct);
 					
-					return list;
 					}
 				
 				return list;
@@ -87,13 +87,14 @@ import com.revature.daos.IUserDAO;
 			
 			try(Connection conn = ConnectionUtility.getConnection()){
 				
-				String sql = "INSERT INTO Account (accountType, accountStatus, balance)"
-						+ "VALUES (?, ?, ?);";
+				String sql = "INSERT INTO Account (accountType, Id_fk, accountStatus, balance)"
+						+ "VALUES (?,?, ?, ?);";
 				
 				PreparedStatement statement = conn.prepareStatement(sql);
 				
 				int index = 0;
 				statement.setString(++index, acct.getAccountType());
+				statement.setInt(++index, acct.getId());
 				statement.setString(++index, acct.getAccountStatus());
 				statement.setDouble(++index, acct.getBalance());
 				

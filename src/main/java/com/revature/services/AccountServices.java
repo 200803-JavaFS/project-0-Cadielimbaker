@@ -48,9 +48,9 @@ import org.apache.logging.log4j.LogManager;
 	}
 
 	//GET SOMEONE TO LOOK OVER METHOD wants me to chance my getId method to static
-	@SuppressWarnings("unlikely-arg-type")
+	
 	public boolean insertAccount(Account acct) {
-
+System.out.println(acct);
 		if (acct.getId() != 0 ) {
 			List<User> list = udao.findAllUser();
 			boolean b = false;
@@ -65,15 +65,11 @@ import org.apache.logging.log4j.LogManager;
 					return true;
 				}
 			}
-		} else {
-			log.info("Creating a new Account: "+acct);
-			if(dao.addAccount(acct)) {
-				return true;
-			}
+			
 		}
 		return false;
-	}
 	
+	}
 	
 	public static double deposit(double amount, int accountId) {
 		
